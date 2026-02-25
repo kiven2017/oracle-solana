@@ -1,6 +1,10 @@
 .anchor
 .DS_Store
-target
+# target - but keep types for deployment
+target/debug
+target/release
+target/deploy
+target/sbpf-solana-solana
 **/*.rs.bk
 node_modules
 test-ledger
