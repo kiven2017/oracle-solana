@@ -29,7 +29,6 @@ describe("my-first-app - 字符串上链服务", () => {
       .accounts({
         record: recordPda,
         payer: payer.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
       })
       .rpc();
 
@@ -65,7 +64,6 @@ describe("my-first-app - 字符串上链服务", () => {
       .accounts({
         record: recordPda,
         payer: payer.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
       })
       .rpc();
 
@@ -78,7 +76,6 @@ describe("my-first-app - 字符串上链服务", () => {
         .accounts({
           record: recordPda,
           payer: payer.publicKey,
-          systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
       assert.fail("应该抛出重复错误");
@@ -103,7 +100,6 @@ describe("my-first-app - 字符串上链服务", () => {
         .accounts({
           record: recordPda,
           payer: payer.publicKey,
-          systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
       assert.fail("应该抛出空字符串错误");
@@ -111,16 +107,5 @@ describe("my-first-app - 字符串上链服务", () => {
       console.log("空字符串被拒绝，错误信息:", error.message);
       assert.include(error.message, "EmptyString");
     }
-  });
-
-  it("获取记录地址", async () => {
-    const testString = "Address Test";
-
-    const tx = await program.methods
-      .getRecordAddress(testString)
-      .accounts({})
-      .rpc();
-
-    console.log("获取地址交易:", tx);
   });
 });
