@@ -36,7 +36,25 @@ const NETWORK_URLS: { [key: string]: string } = {
 };
 
 const connection = new anchor.web3.Connection(NETWORK_URLS[NETWORK] || NETWORK_URLS.localnet, "confirmed");
-const wallet = anchor.Wallet.local();
+
+// 从环境变量读取钱包，支持直接传入私钥数组
+let wallet: anchor.Wallet;
+const anchorWalletEnv = process.env.ANCHOR_WALLET;
+if (anchorWalletEnv) {
+  try {
+    // 尝试解析为 JSON 数组
+    const secretKey = JSON.parse(anchorWalletEnv);
+    const keypair = anchor.web3.Keypair.fromSecretKey(Uint8Array.from(secretKey));
+    wallet = new anchor.Wallet(keypair);
+    console.log("钱包已从环境变量加载");
+  } catch (e) {
+    // 如果不是 JSON，尝试作为文件路径
+    wallet = anchor.Wallet.local();
+  }
+} else {
+  wallet = anchor.Wallet.local();
+}
+
 const provider = new anchor.AnchorProvider(connection, wallet, {
   commitment: "confirmed",
 });
